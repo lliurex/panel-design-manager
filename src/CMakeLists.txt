@@ -16,3 +16,9 @@ add_executable(panel-design-manager main.cpp window.cpp loginwidget.cpp setupwid
 target_link_libraries(panel-design-manager Qt5::Widgets Qt5::Core ${XMLRPC_LIBRARIES})
 
 install(TARGETS panel-design-manager RUNTIME DESTINATION bin)
+
+add_custom_target(
+    po 
+    COMMAND xgettext --keyword=T --language=C++ ${CMAKE_CURRENT_SOURCE_DIR}/setupwidget.cpp ${CMAKE_CURRENT_SOURCE_DIR}/loginwidget.cpp -o ${CMAKE_CURRENT_SOURCE_DIR}/messages.po
+    COMMENT "extracting po..." 
+)

@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "locale.hpp"
 #include "loginwidget.hpp"
 #include "n4dcontext.hpp"
 
@@ -38,7 +39,7 @@ LoginWidget::LoginWidget() : QWidget()
     
     QHBoxLayout* hbox = new QHBoxLayout();
     
-    QLabel* label = new QLabel("user");
+    QLabel* label = new QLabel(T("user"));
     QLabel* icon = new QLabel();
     icon->setPixmap(QIcon::fromTheme("user-online").pixmap(16,16));
     editUser = new QLineEdit();
@@ -55,7 +56,7 @@ LoginWidget::LoginWidget() : QWidget()
     vbox->addLayout(hbox);
     
     hbox = new QHBoxLayout();
-    label = new QLabel("password");
+    label = new QLabel(T("password"));
     icon = new QLabel();
     icon->setPixmap(QIcon::fromTheme("lock").pixmap(16,16));
     editPass = new QLineEdit();
@@ -71,10 +72,10 @@ LoginWidget::LoginWidget() : QWidget()
     vbox->addLayout(hbox);
 
     hbox = new QHBoxLayout();
-    label = new QLabel("server");
+    label = new QLabel(T("server"));
     icon = new QLabel();
     icon->setPixmap(QIcon::fromTheme("folder-cloud").pixmap(16,16));
-    editServer = new QLineEdit("192.168.122.216");
+    editServer = new QLineEdit("server");
     
     hbox->setContentsMargins(0,0,200,0);
     hbox->addWidget(icon);
@@ -85,7 +86,7 @@ LoginWidget::LoginWidget() : QWidget()
     hbox->setAlignment(editServer,Qt::AlignRight);
     vbox->addLayout(hbox);
     
-    QPushButton* button = new QPushButton("login");
+    QPushButton* button = new QPushButton(T("Login"));
     button->setMaximumWidth(128);
     connect(button, SIGNAL (released()), this, SLOT (onLoginClicked()));
     
@@ -122,23 +123,23 @@ void LoginWidget::onLoginClicked()
         switch(e) {
             
             case N4DError::Connection:
-                emsg="Connection error";
+                emsg=T("Connection error");
             break;
             
             case N4DError::BadResponse:
-                emsg="Bad response";
+                emsg=T("Bad response");
             break;
             
             case N4DError::MessageFormat:
-                emsg="Bad message format";
+                emsg=T("Bad message format");
             break;
             
             case N4DError::User:
-                emsg="Login failed";
+                emsg=T("Login failed");
             break;
             
             case N4DError::Group:
-                emsg="User not allowed";
+                emsg=T("User not allowed");
             break;
         }
         

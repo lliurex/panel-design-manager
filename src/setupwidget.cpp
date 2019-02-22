@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "locale.hpp"
 #include "setupwidget.hpp"
 #include "n4dcontext.hpp"
 
@@ -37,33 +38,32 @@ SetupWidget::SetupWidget() : QWidget()
     ready=false;
     
     QVBoxLayout* vbox = new QVBoxLayout();
-    chkStatus = new QCheckBox("Enable custom design"); 
-    //connect(chkStatus,SIGNAL (stateChanged()), this, SLOT (stateChanged()));
+    chkStatus = new QCheckBox(T("Enable custom design")); 
     connect(chkStatus,&QCheckBox::stateChanged,this,&SetupWidget::stateChanged);
     
     vbox->addWidget(chkStatus);
     
     QHBoxLayout* hbox = new QHBoxLayout();
-    QPushButton* btn = new QPushButton("Copy");
+    QPushButton* btn = new QPushButton(T("Copy"));
     btn->setMaximumWidth(128);
     btn->setIcon(QIcon::fromTheme("edit-copy"));
     
     connect(btn,SIGNAL (released()), this, SLOT (onCopyClicked()));
-    lblDate = new QLabel("No config");
+    lblDate = new QLabel(T("No config"));
     
     hbox->addWidget(btn);
     hbox->addWidget(lblDate);
     vbox->addLayout(hbox);
     
-    chkReplicate = new QCheckBox("Replicate on clients");
+    chkReplicate = new QCheckBox(T("Replicate on clients"));
     connect(chkReplicate,&QCheckBox::stateChanged,this,&SetupWidget::stateChanged);
     vbox->addWidget(chkReplicate);
     
     hbox = new QHBoxLayout();
-    btnApply = new QPushButton("Apply");
+    btnApply = new QPushButton(T("Apply"));
     connect(btnApply,SIGNAL (released()), this, SLOT (onApplyClicked()));
     btnApply->setEnabled(false);
-    btn = new QPushButton("Cancel");
+    btn = new QPushButton(T("Cancel"));
     connect(btn,SIGNAL (released()), this, SLOT (onCancelClicked()));
     
     hbox->addWidget(btnApply);
