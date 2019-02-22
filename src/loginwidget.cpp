@@ -24,6 +24,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QLabel>
+#include <QMessageBox>
 
 
 #include <iostream>
@@ -101,8 +102,6 @@ LoginWidget::~LoginWidget()
 
 void LoginWidget::onLoginClicked()
 {
-    clog<<"login...";
-    
     string user = editUser->text().toLocal8Bit().constData();
     string pass = editPass->text().toLocal8Bit().constData();
     string server = editServer->text().toLocal8Bit().constData();
@@ -111,13 +110,35 @@ void LoginWidget::onLoginClicked()
     n4d->setUrl(server,9779);
     n4d->setLogin(user,pass);
     
-    n4d->pull();
+    try {
+        n4d->pull();
+        
+        emit connected();
+    }
+    catch(N4DError e) {
+        
+        QString emsg;
+        
+        switch(e) {
+            
+            case N4DError::Connection:
+                emsg="Connection error";
+            break;
+            
+            case N4DError::BadResponse:
+                emsg="Bad response";
+            break;
+            
+            case N4DError::MessageFormat:
+                emsg="Bad message format";
+            break;
+        }
+        
+        
+        QMessageBox msg;
+        msg.setText(emsg);
+        msg.exec();
+        
+    }
     
-    clog<<endl;
-    
-    
-    clog<<"status "<<n4d->status<<endl;
-    clog<<"replicate "<<n4d->replicate<<endl;
-    
-    emit connected();
 }

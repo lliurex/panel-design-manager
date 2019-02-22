@@ -95,46 +95,63 @@ void N4DContext::setLogin(string user,string pass)
 void N4DContext::pull()
 {
     xmlrpc_c::paramList params;
-    xmlrpc_c::value result = execute("get_variable",params);
+    xmlrpc_c::value result;
+    
+    try {
+        result = execute("get_variable",params);
+    }
+    catch(girerr::error& e) {
+        cerr<<e.what()<<endl;
+        throw N4DError::Connection;
+    }
     
     if (!result.isInstantiated()) {
-        throw runtime_error("bad response");
+        throw N4DError::BadResponse;
     }
     
     if (result.type()!=xmlrpc_c::value::TYPE_STRUCT) {
-        throw runtime_error("bad format (expecting struct)");
+        cerr<<"Expected struct"<<endl;
+        cerr<<"received: "<<result.type()<<endl;
+        cerr<<xmlrpc_c::value_string(result).cvalue()<<endl;
+        throw N4DError::MessageFormat;
     }
     
     map<string,xmlrpc_c::value> settings = xmlrpc_c::value_struct(result);
     
     //sanity check
     if (settings.find("status")==settings.end()) {
-        throw runtime_error("missing status property");
+        cerr<<"missing status property"<<endl;
+        throw N4DError::MessageFormat;
     }
     if (settings.find("replicate")==settings.end()) {
-        throw runtime_error("missing replicate property");
+        cerr<<"missing replicate property"<<endl;
+        throw N4DError::MessageFormat;
     }
     if (settings.find("date")==settings.end()) {
-        throw runtime_error("missing date property");
+        cerr<<"missing date property"<<endl;
+        throw N4DError::MessageFormat;
     }
     
     xmlrpc_c::value tmp = settings["status"];
     if (tmp.type()!=xmlrpc_c::value::TYPE_BOOLEAN) {
-        throw runtime_error("bad status format");
+        cerr<<"bad status format"<<endl;
+        throw N4DError::MessageFormat;
     }
     this->status=xmlrpc_c::value_boolean(tmp).cvalue();
     
-    xmlrpc_c::value tmp = settings["replicate"];
-    if (tmp.type()!=xmlrpc_c::value::TYPE_BOOLEAN) {
-        throw runtime_error("bad replicate format");
+    xmlrpc_c::value tmp2 = settings["replicate"];
+    if (tmp2.type()!=xmlrpc_c::value::TYPE_BOOLEAN) {
+        cerr<<"bad replicate format"<<endl;
+        throw N4DError::MessageFormat;
     }
-    this->replicate=xmlrpc_c::value_boolean(tmp).cvalue();
+    this->replicate=xmlrpc_c::value_boolean(tmp2).cvalue();
     
-    xmlrpc_c::value tmp = settings["date"];
-    if (tmp.type()!=xmlrpc_c::value::TYPE_STRING) {
-        throw runtime_error("bad date format");
+    xmlrpc_c::value tmp3 = settings["date"];
+    if (tmp3.type()!=xmlrpc_c::value::TYPE_STRING) {
+        cerr<<"bad date format"<<endl;
+        throw N4DError::MessageFormat;
     }
-    this->date=xmlrpc_c::value_string(tmp).cvalue();
+    this->date=xmlrpc_c::value_string(tmp3).cvalue();
     
     valid=true;
 }
@@ -148,14 +165,29 @@ void N4DContext::push()
     variable["status"]=xmlrpc_c::value_boolean(this->status);
     variable["date"]=xmlrpc_c::value_string(this->date);
     variable["replicate"]=xmlrpc_c::value_boolean(this->replicate);
-    variable["kconfig"]=xmlrpc_c::value_struct(this->kconfig);
+    
+    map<string,xmlrpc_c::value> kc;
+    
+    for (auto a : this->kconfig) {
+        kc[a.first]=xmlrpc_c::value_string(a.second);
+    }
+    
+    variable["kconfig"]=xmlrpc_c::value_struct(kc);
     
     params.add(xmlrpc_c::value_struct(variable));
     
-    xmlrpc_c::value result = execute("set_variable",params);
+    xmlrpc_c::value result;
+    
+    try {
+        result = execute("set_variable",params);
+    }
+    catch(girerr::error& e) {
+        cerr<<e.what()<<endl;
+        throw N4DError::Connection;
+    }
     
     if (!result.isInstantiated()) {
-        throw runtime_error("bad response");
+        throw N4DError::BadResponse;
     }
     
     if (result.type()==xmlrpc_c::value::TYPE_STRUCT) {

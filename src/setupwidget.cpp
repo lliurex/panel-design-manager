@@ -34,8 +34,12 @@ using namespace std;
 
 SetupWidget::SetupWidget() : QWidget()
 {
+    ready=false;
+    
     QVBoxLayout* vbox = new QVBoxLayout();
     chkStatus = new QCheckBox("Enable custom design"); 
+    //connect(chkStatus,SIGNAL (stateChanged()), this, SLOT (stateChanged()));
+    connect(chkStatus,&QCheckBox::stateChanged,this,&SetupWidget::stateChanged);
     
     vbox->addWidget(chkStatus);
     
@@ -52,17 +56,18 @@ SetupWidget::SetupWidget() : QWidget()
     vbox->addLayout(hbox);
     
     chkReplicate = new QCheckBox("Replicate on clients");
+    connect(chkReplicate,&QCheckBox::stateChanged,this,&SetupWidget::stateChanged);
     vbox->addWidget(chkReplicate);
     
     hbox = new QHBoxLayout();
-    btn = new QPushButton("Apply");
-    connect(btn,SIGNAL (released()), this, SLOT (onApplyClicked()));
-    btn->setEnabled(false);
-    QPushButton* btn2 = new QPushButton("Cancel");
-    connect(btn2,SIGNAL (released()), this, SLOT (onCancelClicked()));
+    btnApply = new QPushButton("Apply");
+    connect(btnApply,SIGNAL (released()), this, SLOT (onApplyClicked()));
+    btnApply->setEnabled(false);
+    btn = new QPushButton("Cancel");
+    connect(btn,SIGNAL (released()), this, SLOT (onCancelClicked()));
     
+    hbox->addWidget(btnApply);
     hbox->addWidget(btn);
-    hbox->addWidget(btn2);
     
     vbox->addLayout(hbox);
     vbox->setAlignment(hbox,Qt::AlignRight);
@@ -95,9 +100,12 @@ void SetupWidget::onCopyClicked()
         child.start();
         child.waitForFinished();
         
-        n4d->kconfig[files.at(n)]=child.readAllStandardOutput();
+        string key = files.at(n).toLocal8Bit().constData();
+        string value = child.readAllStandardOutput().toBase64().data();
+        n4d->kconfig[key]=value;
     }
     
+    btnApply->setEnabled(true);
 }
 
 void SetupWidget::onApplyClicked()
@@ -115,11 +123,19 @@ void SetupWidget::onApplyClicked()
     
     n4d->push();
     
+    btnApply->setEnabled(false);
 }
 
 void SetupWidget::onCancelClicked()
 {
     exit(0);
+}
+
+void SetupWidget::stateChanged(int state)
+{
+    if (ready) {
+        btnApply->setEnabled(true);
+    }
 }
 
 void SetupWidget::pull()
@@ -131,4 +147,6 @@ void SetupWidget::pull()
     
     
     lblDate->setText(QString(n4d->date.c_str()));
+    
+    ready=true;
 }

@@ -30,6 +30,13 @@ namespace lliurex
 {
     namespace pdm
     {
+        enum class N4DError 
+        {
+            Connection,
+            BadResponse,
+            MessageFormat
+        };
+        
         class N4DContext
         {
             private:
@@ -48,7 +55,7 @@ namespace lliurex
             bool status;
             bool replicate;
             std::string date;
-            std::map<QString,QByteArray> kconfig;
+            std::map<std::string,std::string> kconfig;
             
             N4DContext();
             

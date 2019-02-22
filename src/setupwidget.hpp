@@ -41,11 +41,15 @@ namespace lliurex
             QCheckBox* chkStatus;
             QCheckBox* chkReplicate;
             QLabel* lblDate;
+            QPushButton* btnApply;
+            
+            bool ready;
             
             private slots:
             void onCopyClicked();
             void onApplyClicked();
             void onCancelClicked();
+            void stateChanged(int state);
             
             public:
                 
