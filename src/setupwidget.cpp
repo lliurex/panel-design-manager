@@ -73,7 +73,6 @@ SetupWidget::SetupWidget() : QWidget()
     vbox->setAlignment(hbox,Qt::AlignRight);
     
     setMinimumWidth(600);
-    //setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
     
     setLayout(vbox);
 }
@@ -110,7 +109,6 @@ void SetupWidget::onCopyClicked()
 
 void SetupWidget::onApplyClicked()
 {
-    clog<<"pushing..."<<endl;
     
     N4DContext* n4d=N4DContext::context();
     
@@ -118,8 +116,9 @@ void SetupWidget::onApplyClicked()
     time_t t=time(nullptr);
     strftime(buff, 32, "%Y-%m-%d %H:%M:%S", localtime(&t));
     
-    clog<<buff<<endl;
     n4d->date=string(buff);
+    n4d->status=chkStatus->isChecked();
+    n4d->replicate=chkReplicate->isChecked();
     
     n4d->push();
     

@@ -57,12 +57,47 @@ xmlrpc_c::value N4DContext::execute(string method,xmlrpc_c::paramList extraParam
     );
     xmlrpc_c::client_xml n4d(&transport);
     
-    xmlrpc_c::paramList params;
+    
+    // user validation call
+    xmlrpc_c::paramList vparams;
+    vparams.add(xmlrpc_c::value_string(user));
+    vparams.add(xmlrpc_c::value_string(pass));
+    xmlrpc_c::rpcPtr rpcp("validate_user", vparams);
+    xmlrpc_c::carriageParm_curl0 carriage(fullUrl);
+    rpcp->call(&n4d, &carriage);
+    
+    xmlrpc_c::value vres = rpcp->getResult();
+    xmlrpc_c::value_array validation(vres);
+    vector<xmlrpc_c::value> vData = validation.cvalue();
+    
+    bool userOk=xmlrpc_c::value_boolean(vData[0]).cvalue();
+    bool groupOk=false;
+    
+    vector<xmlrpc_c::value> groups = xmlrpc_c::value_array(vData[1]).cvalue();
+    
+    for (int n=0;n<groups.size();n++) {
+        string g=xmlrpc_c::value_string(groups[n]).cvalue();
+        
+        if (g=="sudo") {
+            groupOk=true;
+            break;
+        }
+    }
+    
+    if (!userOk) {
+        throw N4DError::User;
+    }
+    
+    if (!groupOk) {
+        throw N4DError::Group;
+    }
+    
     vector<xmlrpc_c::value> login;
     
     login.push_back(xmlrpc_c::value_string(user));
     login.push_back(xmlrpc_c::value_string(pass));
     
+    xmlrpc_c::paramList params;
     params.add(xmlrpc_c::value_array(login));
     params.add(xmlrpc_c::value_string("VariablesManager"));
     params.add(xmlrpc_c::value_string("PANELDESIGNMANAGER"));
@@ -71,8 +106,7 @@ xmlrpc_c::value N4DContext::execute(string method,xmlrpc_c::paramList extraParam
         params.add(extraParams[n]);
     }
     
-    xmlrpc_c::rpcPtr rpcp(method, params);
-    xmlrpc_c::carriageParm_curl0 carriage(fullUrl);
+    rpcp=xmlrpc_c::rpcPtr(method,params);
     rpcp->call(&n4d, &carriage);
     
     xmlrpc_c::value result = rpcp->getResult();
@@ -111,8 +145,6 @@ void N4DContext::pull()
     
     if (result.type()!=xmlrpc_c::value::TYPE_STRUCT) {
         cerr<<"Expected struct"<<endl;
-        cerr<<"received: "<<result.type()<<endl;
-        cerr<<xmlrpc_c::value_string(result).cvalue()<<endl;
         throw N4DError::MessageFormat;
     }
     
@@ -129,6 +161,10 @@ void N4DContext::pull()
     }
     if (settings.find("date")==settings.end()) {
         cerr<<"missing date property"<<endl;
+        throw N4DError::MessageFormat;
+    }
+    if (settings.find("kconfig")==settings.end()) {
+        cerr<<"missing kconfig property"<<endl;
         throw N4DError::MessageFormat;
     }
     
@@ -152,6 +188,19 @@ void N4DContext::pull()
         throw N4DError::MessageFormat;
     }
     this->date=xmlrpc_c::value_string(tmp3).cvalue();
+    
+    xmlrpc_c::value tmp4 = settings["kconfig"];
+    if (tmp4.type()!=xmlrpc_c::value::TYPE_STRUCT) {
+        cerr<<"bad kconfig format"<<endl;
+        throw N4DError::MessageFormat;
+    }
+    
+    map<string,xmlrpc_c::value> raw = xmlrpc_c::value_struct(tmp4);
+    
+    for (auto r : raw) {
+        this->kconfig[r.first]=xmlrpc_c::value_string(r.second).cvalue();
+    }
+    
     
     valid=true;
 }

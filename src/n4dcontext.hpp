@@ -34,7 +34,9 @@ namespace lliurex
         {
             Connection,
             BadResponse,
-            MessageFormat
+            MessageFormat,
+            User,
+            Group
         };
         
         class N4DContext

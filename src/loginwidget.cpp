@@ -74,7 +74,7 @@ LoginWidget::LoginWidget() : QWidget()
     label = new QLabel("server");
     icon = new QLabel();
     icon->setPixmap(QIcon::fromTheme("folder-cloud").pixmap(16,16));
-    editServer = new QLineEdit("server");
+    editServer = new QLineEdit("192.168.122.216");
     
     hbox->setContentsMargins(0,0,200,0);
     hbox->addWidget(icon);
@@ -131,6 +131,14 @@ void LoginWidget::onLoginClicked()
             
             case N4DError::MessageFormat:
                 emsg="Bad message format";
+            break;
+            
+            case N4DError::User:
+                emsg="Login failed";
+            break;
+            
+            case N4DError::Group:
+                emsg="User not allowed";
             break;
         }
         
