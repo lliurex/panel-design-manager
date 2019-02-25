@@ -11,7 +11,7 @@ namespace lliurex
 {
     namespace pdm
     {
-        QString T(const char* s)
+        static QString T(const char* s)
         {
             return QString::fromUtf8(gettext(s));
         }

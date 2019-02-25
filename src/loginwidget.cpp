@@ -141,6 +141,14 @@ void LoginWidget::onLoginClicked()
             case N4DError::Group:
                 emsg=T("User not allowed");
             break;
+            
+            case N4DError::Get:
+                emsg=T("Error reading settings");
+            break;
+            
+            case N4DError::Set:
+                emsg=T("Error writting settings");
+            break;
         }
         
         

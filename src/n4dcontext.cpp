@@ -99,8 +99,7 @@ xmlrpc_c::value N4DContext::execute(string method,xmlrpc_c::paramList extraParam
     
     xmlrpc_c::paramList params;
     params.add(xmlrpc_c::value_array(login));
-    params.add(xmlrpc_c::value_string("VariablesManager"));
-    params.add(xmlrpc_c::value_string("PANELDESIGNMANAGER"));
+    params.add(xmlrpc_c::value_string("PanelDesignManagerServer"));
     
     for (int n=0;n<extraParams.size();n++) {
         params.add(extraParams[n]);
@@ -132,7 +131,7 @@ void N4DContext::pull()
     xmlrpc_c::value result;
     
     try {
-        result = execute("get_variable",params);
+        result = execute("get_configuration",params);
     }
     catch(girerr::error& e) {
         cerr<<e.what()<<endl;
@@ -148,7 +147,37 @@ void N4DContext::pull()
         throw N4DError::MessageFormat;
     }
     
-    map<string,xmlrpc_c::value> settings = xmlrpc_c::value_struct(result);
+    map<string,xmlrpc_c::value> message = xmlrpc_c::value_struct(result);
+    if (message.find("status")==message.end()) {
+        cerr<<"missing status property"<<endl;
+        throw N4DError::MessageFormat;
+    }
+    if (message.find("msg")==message.end()) {
+        cerr<<"missing msg property"<<endl;
+        throw N4DError::MessageFormat;
+    }
+    
+    xmlrpc_c::value messageStatus = message["status"];
+    if (messageStatus.type()!=xmlrpc_c::value::TYPE_BOOLEAN) {
+        cerr<<"bad status format"<<endl;
+        throw N4DError::MessageFormat;
+    }
+    
+    xmlrpc_c::value messageMsg = message["msg"];
+    
+    if (!xmlrpc_c::value_boolean(messageStatus).cvalue()) {
+        cerr<<"failed to get config"<<endl;
+        
+        if (messageMsg.type()==xmlrpc_c::value::TYPE_STRING) {
+            xmlrpc_c::value_string emsg(messageMsg);
+            cerr<<emsg.cvalue()<<endl;
+        }
+        
+        throw N4DError::Get;
+    }
+    
+    
+    map<string,xmlrpc_c::value> settings = xmlrpc_c::value_struct(messageMsg);
     
     //sanity check
     if (settings.find("status")==settings.end()) {
@@ -228,7 +257,7 @@ void N4DContext::push()
     xmlrpc_c::value result;
     
     try {
-        result = execute("set_variable",params);
+        result = execute("save_configuration",params);
     }
     catch(girerr::error& e) {
         cerr<<e.what()<<endl;
@@ -239,17 +268,32 @@ void N4DContext::push()
         throw N4DError::BadResponse;
     }
     
-    if (result.type()==xmlrpc_c::value::TYPE_STRUCT) {
-        map<string,xmlrpc_c::value> res = xmlrpc_c::value_struct(result).cvalue();
-        
-        for (auto a:res) {
-            clog<<"* "<<a.first<<":";
-            
-            if (a.second.type()==xmlrpc_c::value::TYPE_STRING) {
-                clog<<xmlrpc_c::value_string(a.second).cvalue();
-            }
-            
-            clog<<endl;
-        }
+    if (result.type()!=xmlrpc_c::value::TYPE_STRUCT) {
+        cerr<<"Expected struct"<<endl;
+        throw N4DError::Set;
     }
+    
+    map<string,xmlrpc_c::value> res = xmlrpc_c::value_struct(result).cvalue();
+    
+    if (res.find("status")==res.end()) {
+        cerr<<"Status not found"<<endl;
+        throw N4DError::Set;
+    }
+    
+    xmlrpc_c::value status = res["status"];
+    
+    if (status.type()!=xmlrpc_c::value::TYPE_BOOLEAN) {
+        cerr<<"Unexepected status format"<<endl;
+        throw N4DError::Set;
+    }
+    
+    if (!xmlrpc_c::value_boolean(status).cvalue()) {
+        
+        //We are assuming msg field exists and it is a string :S
+        cerr<<"Msg:"<<xmlrpc_c::value_string(res["msg"]).cvalue()<<endl;
+        
+        throw N4DError::Set;
+    }
+    
+    
 }

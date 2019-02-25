@@ -36,7 +36,9 @@ namespace lliurex
             BadResponse,
             MessageFormat,
             User,
-            Group
+            Group,
+            Get,
+            Set
         };
         
         class N4DContext
