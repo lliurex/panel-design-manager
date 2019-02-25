@@ -4,6 +4,7 @@ import os
 import threading
 import tempfile
 import time
+import base64
 
 class PanelDesignManagerClient:
 	
@@ -58,4 +59,27 @@ class PanelDesignManagerClient:
 
 	#def design_trigger
 	
+	def _write_kconfig(self,data):
+		b64data=data["kconfig"]
+		
+		for file in b64data:
+			path="/etc/xdg/lliurex/custom/"+file
+			f=open(path,"w")
+			raw=base64.b64decode(b64data[file])
+			f.write(raw)
+			f.close()
+		
+	#def _write_kconfig
 	
+	def _delete_kconfig(self):
+		custom="/etc/xdg/lliurex/custom/"
+		
+		files=os.listdir(path)
+		
+		for file in files:
+			path=custom+file
+			
+			if (os.path.isfile(path)):
+				os.remove(path)
+		
+	#def _delete_kconfig

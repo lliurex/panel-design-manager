@@ -1,0 +1,6 @@
+[SETUP]
+type=python
+path=PanelDesignManagerClient.py
+class=PanelDesignManagerClient
+[METHODS]
+design_trigger=sudo,admins

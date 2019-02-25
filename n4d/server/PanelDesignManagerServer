@@ -1,0 +1,7 @@
+[SETUP]
+type=python
+path=PanelDesignManagerServer.py
+class=PanelDesignManagerServer
+[METHODS]
+save_configuration=sudo,admins
+get_configuration=anonymous
