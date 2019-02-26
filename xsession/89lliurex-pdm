@@ -1,0 +1,4 @@
+
+install -o $USER /etc/xdg/lliurex/pdm/* $HOME/.config/
+
+
