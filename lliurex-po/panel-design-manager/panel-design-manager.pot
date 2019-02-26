@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-26 16:38+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/quique/workspace/panel-design-manager/src/setupwidget.cpp:41
+msgid "Enable custom design"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/setupwidget.cpp:47
+msgid "Copy"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/setupwidget.cpp:52
+msgid "No config"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/setupwidget.cpp:58
+msgid "Replicate on clients"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/setupwidget.cpp:63
+msgid "Apply"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/setupwidget.cpp:66
+msgid "Cancel"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:42
+msgid "user"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:59
+msgid "password"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:75
+msgid "server"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:89
+msgid "Login"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:126
+msgid "Connection error"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:130
+msgid "Bad response"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:134
+msgid "Bad message format"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:138
+msgid "Login failed"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:142
+msgid "User not allowed"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:146
+msgid "Error reading settings"
+msgstr ""
+
+#: /home/quique/workspace/panel-design-manager/src/loginwidget.cpp:150
+msgid "Error writting settings"
+msgstr ""

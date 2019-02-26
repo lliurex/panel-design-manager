@@ -1,0 +1,20 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Panel Design Manager
+Name[es]=Panel Design Manager
+Name[ca_ES@valencia]=Panel Design Manager
+Name[ca_ES.UTF-8@valencia]=Panel Design Manager
+TryExec=/usr/bin/panel-design-manager
+Comment=Configures a custom panel design system-wide
+Comment[ca_ES@valencia]=Configures a custom panel design system-wide
+Comment[ca_ES.UTF-8@valencia]=Configures a custom panel design system-wide
+Comment[ca_ES]=Configures a custom panel design system-wide
+Comment[es]=Configura un panel personalizado en el sistema
+StartupNotify=true
+Exec=/usr/bin/panel-design-manager
+Icon=panel-design-manager
+Terminal=false
+Type=Application
+X-GNOME-Settings-Panel=panel-design-manager;
+X-Unity-Settings-Panel=panel-deisng-manager;
+Categories=X-GNOME-Settings-Panel;X-GNOME-SystemSettings;X-Unity-Settings-Panel;LliureX-Administration;
