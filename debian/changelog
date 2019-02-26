@@ -1,8 +1,10 @@
-panel-design-manager (0.3) UNRELEASED; urgency=medium
+panel-design-manager (0.3ubuntu1) UNRELEASED; urgency=medium
 
-  * Bionic pre-release
+  * master tag: e6e832fc3d81de2b926ef9714836d2566c8639ef
+  * Overhauled UI with c++ Qt
+  * n4d plugins designed to work with plasma settings files, no longer dconf
 
- -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 26 Feb 2019 13:40:16 +0100
+ -- Enrique MG <quique@rapture>  Tue, 26 Feb 2019 16:42:58 +0100
 
 panel-design-manager (0.2.3) xenial; urgency=high
 
