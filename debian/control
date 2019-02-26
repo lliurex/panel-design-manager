@@ -8,7 +8,7 @@ Homepage: http://lliurex.net
 
 Package: panel-design-manager
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, kconfig-dump
 Description: Panel Design Manager GUI
  Allows to set a custom mate-panel configuration as a system default.
 
