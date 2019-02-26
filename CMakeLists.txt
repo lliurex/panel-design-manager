@@ -19,3 +19,7 @@ install(
   FILES ${CMAKE_CURRENT_SOURCE_DIR}/n4d/server/PanelDesignManagerServer
   DESTINATION etc/n4d/conf.d/
 )
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/xsession/89lliurex-pdm
+  DESTINATION etc/X11/Xsession.d/
+)

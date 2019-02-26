@@ -6,6 +6,8 @@ import tempfile
 import time
 import base64
 
+PDM_PATH="/etc/xdg/lliurex/pdm/"
+
 class PanelDesignManagerClient:
 	
 	def __init__(self):
@@ -63,7 +65,7 @@ class PanelDesignManagerClient:
 		b64data=data["kconfig"]
 		
 		for file in b64data:
-			path="/etc/xdg/lliurex/custom/"+file
+			path=PDM_PATH+file
 			f=open(path,"w")
 			raw=base64.b64decode(b64data[file])
 			f.write(raw)
@@ -72,7 +74,7 @@ class PanelDesignManagerClient:
 	#def _write_kconfig
 	
 	def _delete_kconfig(self):
-		custom="/etc/xdg/lliurex/custom/"
+		custom=PDM_PATH
 		
 		files=os.listdir(path)
 		
