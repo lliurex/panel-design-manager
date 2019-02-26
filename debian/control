@@ -1,0 +1,32 @@
+Source: panel-design-manager
+Section: utils
+Priority: optional
+Maintainer: LliureX Team <lliurex@gva.es>
+Build-Depends: debhelper (>=9), llxcfg-dev, zero-dev, llxsrchelper
+Standards-Version: 3.9.7
+Homepage: http://lliurex.net
+
+Package: panel-design-manager
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Panel Design Manager GUI
+ Allows to set a custom mate-panel configuration as a system default.
+
+Package: panel-design-manager-common
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Panel Design Manager Common Files
+ Common files for panel-design-manager
+
+Package: n4d-paneldesignmanager-server
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3, n4d
+Description: Panel Design Manager Server plugin
+ N4D Plugin that manages panel configuration and its replication.
+
+Package: n4d-paneldesignmanager-client
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3, n4d
+Description: Panel Design Manager Client plugin
+ N4D Plugin that reads and applies server configuration.
+
