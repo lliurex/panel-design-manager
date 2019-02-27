@@ -2,7 +2,7 @@ Source: panel-design-manager
 Section: utils
 Priority: optional
 Maintainer: LliureX Team <lliurex@gva.es>
-Build-Depends: debhelper (>=9), zero-dev, llxsrchelper, cmake, qtbase5-dev, extra-cmake-modules
+Build-Depends: debhelper (>=9), zero-dev, llxsrchelper, cmake, qtbase5-dev, extra-cmake-modules, libxmlrpc-c++8-dev
 Standards-Version: 3.9.7
 Homepage: http://lliurex.net
 
