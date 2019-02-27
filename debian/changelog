@@ -1,4 +1,4 @@
-panel-design-manager (0.3.0) bionic; urgency=medium
+panel-design-manager (0.3.1) bionic; urgency=medium
 
   * master tag: e6e832fc3d81de2b926ef9714836d2566c8639ef
   * Overhauled UI with c++ Qt
