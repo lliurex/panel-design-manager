@@ -1,3 +1,9 @@
+panel-design-manager (0.3.3.0) bionic; urgency=low
+
+  * Dummy upgrade
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Mon, 20 May 2019 09:52:21 +0200
+
 panel-design-manager (0.3.3) bionic; urgency=medium
 
   * master tag: e6e832fc3d81de2b926ef9714836d2566c8639ef
