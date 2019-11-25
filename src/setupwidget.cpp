@@ -21,7 +21,6 @@
 #include "setupwidget.hpp"
 #include "n4dcontext.hpp"
 
-
 #include <QProcess>
 
 #include <iostream>
@@ -93,13 +92,13 @@ void SetupWidget::onCopyClicked()
     child.setProgram("kconfig-dump");
     
     for (int n=0;n<files.size();n++) {
-        clog<<"reading "<<files.at(n).toLocal8Bit().constData()<<endl;
+        clog<<"reading "<<files.at(n).toStdString()<<endl;
         child.setArguments({files.at(n)});
         
         child.start();
         child.waitForFinished();
         
-        string key = files.at(n).toLocal8Bit().constData();
+        string key = files.at(n).toStdString();
         string value = child.readAllStandardOutput().toBase64().data();
         n4d->kconfig[key]=value;
     }

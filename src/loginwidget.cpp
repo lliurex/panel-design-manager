@@ -27,7 +27,6 @@
 #include <QLabel>
 #include <QMessageBox>
 
-
 #include <iostream>
 
 using namespace lliurex::pdm;
@@ -43,7 +42,6 @@ LoginWidget::LoginWidget() : QWidget()
     QLabel* icon = new QLabel();
     icon->setPixmap(QIcon::fromTheme("user-online").pixmap(16,16));
     editUser = new QLineEdit();
-    
     
     hbox->setContentsMargins(0,0,200,0);
     hbox->addWidget(icon);
@@ -103,9 +101,9 @@ LoginWidget::~LoginWidget()
 
 void LoginWidget::onLoginClicked()
 {
-    string user = editUser->text().toLocal8Bit().constData();
-    string pass = editPass->text().toLocal8Bit().constData();
-    string server = editServer->text().toLocal8Bit().constData();
+    string user = editUser->text().toStdString();
+    string pass = editPass->text().toStdString();
+    string server = editServer->text().toStdString();
     
     N4DContext* n4d=N4DContext::context();
     n4d->setUrl(server,9779);
@@ -150,7 +148,6 @@ void LoginWidget::onLoginClicked()
                 emsg=T("Error writting settings");
             break;
         }
-        
         
         QMessageBox msg;
         msg.setText(emsg);
